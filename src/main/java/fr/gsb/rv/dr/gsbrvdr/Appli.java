@@ -18,9 +18,12 @@ public class Appli extends Application {
         Menu menuFichier = new Menu("Fichier");
         Menu menuRapports = new Menu("Rapports");
         Menu menuPraticiens = new Menu("Praticiens");
+        menuRapports.setDisable(true);
+        menuPraticiens.setDisable(true);
 
         MenuItem itemSeConnecter = new MenuItem("Se Connecter");
         MenuItem itemSeDeconnecter = new MenuItem("Se Deconnecter");
+        itemSeDeconnecter.setDisable(true);
         MenuItem itemQuitter = new MenuItem("Quitter");
         MenuItem itemConsulter = new MenuItem("Consulter");
         MenuItem itemHesitants = new MenuItem("Hésitants");
@@ -45,6 +48,10 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         System.out.println("Se connecter");
+                        menuRapports.setDisable(false);
+                        menuPraticiens.setDisable(false);
+                        itemSeDeconnecter.setDisable(false);
+                        itemSeConnecter.setDisable(true);
                     }
                 }
         );
@@ -53,6 +60,10 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         System.out.println("Se Déconnecter");
+                        menuRapports.setDisable(true);
+                        menuPraticiens.setDisable(true);
+                        itemSeDeconnecter.setDisable(true);
+                        itemSeConnecter.setDisable(false);
                     }
                 }
         );
