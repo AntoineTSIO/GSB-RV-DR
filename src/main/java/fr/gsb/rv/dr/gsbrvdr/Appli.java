@@ -12,10 +12,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
 import java.io.IOException;
 import java.util.Optional;
 
@@ -43,8 +45,15 @@ public class Appli extends Application {
         menuFichier.getItems().add( 2 , sep );
         barreMenus.getMenus().addAll( menuFichier , menuRapports , menuPraticiens );
 
+        Image img = new Image("gsblogo.png");
+        ImageView imageView = new ImageView();
+        imageView.setImage(img);
+        HBox box = new HBox();
+        box.getChildren().add(imageView);
+
         BorderPane root = new BorderPane();
         root.setTop(barreMenus);
+        root.getChildren().add(box);
         Scene scene = new Scene( root , 600 , 500 );
         primaryStage.setTitle("GSB-RV-DR");
         primaryStage.setScene(scene);
