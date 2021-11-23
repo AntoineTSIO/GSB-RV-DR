@@ -12,6 +12,9 @@ public class Visiteur {
         this.prenom = prenom;
     }
 
+    public Visiteur() {
+    }
+
     public String getMatricule() {
         return matricule;
     }

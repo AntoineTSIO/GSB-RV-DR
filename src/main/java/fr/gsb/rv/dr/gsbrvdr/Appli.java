@@ -1,7 +1,11 @@
 package fr.gsb.rv.dr.gsbrvdr;
 
 import fr.gsb.rv.dr.entites.Visiteur;
+import fr.gsb.rv.dr.modeles.ModeleGsbRv;
+import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
+import fr.gsb.rv.dr.vues.VueConnexion;
+import fr.gsb.rv.dr.vues.VueErreur;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -10,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -49,21 +55,35 @@ public class Appli extends Application {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        System.out.println("Se connecter");
-                        menuRapports.setDisable(false);
-                        menuPraticiens.setDisable(false);
-                        itemSeDeconnecter.setDisable(false);
-                        itemSeConnecter.setDisable(true);
+                        VueConnexion vue = new VueConnexion();
+                        Optional<Pair<String, String>> response = vue.showAndWait();
+                        if(response.isPresent()){
+                                try {
+                                    Visiteur delegue = ModeleGsbRv.seConnecter(response.get().getKey(), response.get().getValue());
+                                    if(delegue != null){
+                                        Session.ouvrir(delegue);
+                                        menuRapports.setDisable(false);
+                                        menuPraticiens.setDisable(false);
+                                        itemSeDeconnecter.setDisable(false);
+                                        itemSeConnecter.setDisable(true);
+                                        primaryStage.setTitle("GSB-RV-DR | " + Session.getSession().getLeVisiteur().getNom() + " " + Session.getSession().getLeVisiteur().getPrenom());
+                                    }else{
+                                        VueErreur vueErreur = new VueErreur("Erreur de connexion","Impossible de se connecter, veuillez ré-essayer","Matricule ou Mot de passe incorrect");
+                                        vueErreur.showAndWait();
+                                    }
+                                } catch (ConnexionException e) {
+                                    e.printStackTrace();
+                                }
+                        }
                         // Session.ouvrir(new Visiteur("OB001", "BOUAICHI", "Oumayma"));
-                        // primaryStage.setTitle("GSB-RV-DR | " + Session.getSession().getLeVisiteur().getNom() + " " + Session.getSession().getLeVisiteur().getPrenom());
                     }
                 }
         );
         itemSeDeconnecter.setOnAction(
+
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        System.out.println("Se Déconnecter");
                         menuRapports.setDisable(true);
                         menuPraticiens.setDisable(true);
                         itemSeDeconnecter.setDisable(true);
@@ -98,7 +118,6 @@ public class Appli extends Application {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        System.out.println("Consulter");
                         //System.out.println("[Rapport] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
                     }
                 }
@@ -107,7 +126,6 @@ public class Appli extends Application {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        System.out.println("Hésitants");
                         //System.out.println("[Praticiens] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
                     }
                 }
