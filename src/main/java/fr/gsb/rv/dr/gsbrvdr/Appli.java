@@ -1,5 +1,7 @@
 package fr.gsb.rv.dr.gsbrvdr;
 
+import fr.gsb.rv.dr.entites.Visiteur;
+import fr.gsb.rv.dr.technique.Session;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -52,6 +54,8 @@ public class Appli extends Application {
                         menuPraticiens.setDisable(false);
                         itemSeDeconnecter.setDisable(false);
                         itemSeConnecter.setDisable(true);
+                        // Session.ouvrir(new Visiteur("OB001", "BOUAICHI", "Oumayma"));
+                        // primaryStage.setTitle("GSB-RV-DR | " + Session.getSession().getLeVisiteur().getNom() + " " + Session.getSession().getLeVisiteur().getPrenom());
                     }
                 }
         );
@@ -64,6 +68,8 @@ public class Appli extends Application {
                         menuPraticiens.setDisable(true);
                         itemSeDeconnecter.setDisable(true);
                         itemSeConnecter.setDisable(false);
+                        primaryStage.setTitle("GSB-RV-DR");
+                        Session.fermer();
                     }
                 }
         );
@@ -83,6 +89,8 @@ public class Appli extends Application {
                         if(response.get() == btnOui){
                             Platform.exit();
                         }
+
+                        Session.fermer();
                     }
                 }
         );
@@ -91,6 +99,7 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         System.out.println("Consulter");
+                        //System.out.println("[Rapport] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
                     }
                 }
         );
@@ -99,6 +108,7 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         System.out.println("Hésitants");
+                        //System.out.println("[Praticiens] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
                     }
                 }
         );
