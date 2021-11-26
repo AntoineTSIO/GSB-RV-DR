@@ -13,7 +13,7 @@ public class PanneauRapports extends StackPane {
     public PanneauRapports(){
         super();
         VBox root = new VBox();
-        Label label = new Label("Raports");
+        Label label = new Label("Rapports");
 
         label.setAlignment(Pos.CENTER);
         label.setTextAlignment(TextAlignment.CENTER);
