@@ -49,13 +49,16 @@ public class Appli extends Application {
         menuFichier.getItems().add( 2 , sep );
         barreMenus.getMenus().addAll( menuFichier , menuRapports , menuPraticiens );
 
-        Image image = new Image("https://i.imgur.com/k1xhSgD.png");
-        ImageView imageView = new ImageView(image);
-
+        PanneauAccueil vueAccueil = new PanneauAccueil();
+        PanneauRapports vueRapports = new PanneauRapports();
+        PanneauPraticiens vuePraticiens = new PanneauPraticiens();
+        StackPane pile = new StackPane();
+        pile.getChildren().addAll(vueAccueil, vueRapports, vuePraticiens);
+        vueAccueil.toFront();
 
         BorderPane root = new BorderPane();
         root.setTop(barreMenus);
-        root.setCenter(imageView);
+        root.setCenter(pile);
         Scene scene = new Scene( root , 600 , 500 );
         primaryStage.setTitle("GSB-RV-DR");
         primaryStage.setScene(scene);
@@ -101,6 +104,7 @@ public class Appli extends Application {
                         itemSeConnecter.setDisable(false);
                         primaryStage.setTitle("GSB-RV-DR");
                         Session.fermer();
+                        vueAccueil.toFront();
                     }
                 }
         );
@@ -120,7 +124,6 @@ public class Appli extends Application {
                         if(response.get() == btnOui){
                             Platform.exit();
                         }
-
                         Session.fermer();
                     }
                 }
@@ -130,6 +133,7 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         //System.out.println("[Rapport] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
+                        vueRapports.toFront();
                     }
                 }
         );
@@ -138,6 +142,7 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         //System.out.println("[Praticiens] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
+                        vuePraticiens.toFront();
                     }
                 }
         );
