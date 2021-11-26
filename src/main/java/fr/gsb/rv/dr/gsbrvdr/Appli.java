@@ -123,8 +123,8 @@ public class Appli extends Application {
                         Optional<ButtonType> response = alertQuitter.showAndWait();
                         if(response.get() == btnOui){
                             Platform.exit();
+                            Session.fermer();
                         }
-                        Session.fermer();
                     }
                 }
         );
