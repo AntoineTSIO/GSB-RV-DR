@@ -3,13 +3,12 @@ package fr.gsb.rv.dr.gsbrvdr;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 public class PanneauRapports extends StackPane {
@@ -21,6 +20,7 @@ public class PanneauRapports extends StackPane {
 
         label.setAlignment(Pos.CENTER);
         label.setTextAlignment(TextAlignment.CENTER);
+        label.setFont(new Font(25));
         root.setStyle("-fx-alignment: center");
         root.setBackground(new Background(
                 new BackgroundFill(

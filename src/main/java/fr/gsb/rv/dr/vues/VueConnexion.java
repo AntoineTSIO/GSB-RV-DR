@@ -1,6 +1,5 @@
 package fr.gsb.rv.dr.vues;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;

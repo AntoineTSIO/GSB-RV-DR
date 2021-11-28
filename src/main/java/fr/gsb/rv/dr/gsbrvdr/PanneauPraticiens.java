@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 public class PanneauPraticiens extends StackPane {
@@ -19,6 +20,7 @@ public class PanneauPraticiens extends StackPane {
 
         label.setAlignment(Pos.CENTER);
         label.setTextAlignment(TextAlignment.CENTER);
+        label.setFont(new Font(25));
         root.setStyle("-fx-alignment: center");
         root.setBackground(new Background(
                 new BackgroundFill(
