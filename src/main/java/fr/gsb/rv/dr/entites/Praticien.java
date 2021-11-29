@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public class Praticien {
 
-    private String numero ;
+    private int numero ;
     private String nom ;
     private String ville ;
     private double coefNotoriete ;
     private LocalDate dateDerniereVisite ;
     private int dernierCoefConfiance ;
 
-    public Praticien(String numero, String nom, String ville, double coefNotoriete, LocalDate dateDerniereVisite, int dernierCoefConfiance) {
+    public Praticien(int numero, String nom, String ville, double coefNotoriete, LocalDate dateDerniereVisite, int dernierCoefConfiance) {
         this.numero = numero;
         this.nom = nom;
         this.ville = ville;
@@ -20,11 +20,15 @@ public class Praticien {
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
 
-    public String getNumero() {
+    public Praticien() {
+
+    }
+
+    public int getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
     }
 

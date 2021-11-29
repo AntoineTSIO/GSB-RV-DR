@@ -16,12 +16,11 @@ public class PanneauPraticiens extends StackPane {
     public PanneauPraticiens(){
         super();
         VBox root = new VBox();
-        Label label = new Label("Praticiens");
+        Label label = new Label("Sélectionner un critère de tri");
 
         label.setAlignment(Pos.CENTER);
         label.setTextAlignment(TextAlignment.CENTER);
-        label.setFont(new Font(25));
-        root.setStyle("-fx-alignment: center");
+        root.setStyle("-fx-alignment: center; -fx-font-weight: bold; -fx-font-size: 25");
         root.setBackground(new Background(
                 new BackgroundFill(
                         new LinearGradient(0, 0, 0, 1, true,

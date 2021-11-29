@@ -1,5 +1,6 @@
 package fr.gsb.rv.dr.modeles;
 
+import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
@@ -7,14 +8,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ModeleGsbRv {
 
-    public static Visiteur seConnecter( String matricule , String mdp ) throws ConnexionException{
+    public static Visiteur seConnecter(String matricule, String mdp) throws ConnexionException {
 
-        // Code de test à compléter
-
-        Connection connexion = ConnexionBD.getConnexion() ;
+        Connection connexion = ConnexionBD.getConnexion();
 
         String requete = "SELECT t.vis_matricule, t.tra_role, t.jjmmaa, V.vis_prenom, V.vis_nom\n" +
                 "FROM Travailler t \n" +
@@ -26,28 +26,54 @@ public class ModeleGsbRv {
                 "AND t.jjmmaa = s.jjmmaa\n" +
                 "AND V.vis_matricule = t.vis_matricule\n" +
                 "WHERE t.tra_role = 'Délégué'\n" +
-                "AND V.vis_matricule = '"+matricule+"'\n" +
-                "AND V.vis_mdp = '"+mdp+"'";
+                "AND V.vis_matricule = '" + matricule + "'\n" +
+                "AND V.vis_mdp = '" + mdp + "'";
 
         try {
-            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete ) ;
-            requetePreparee.setString( 1 , matricule );
-            ResultSet resultat = requetePreparee.executeQuery() ;
-            if( resultat.next() ){
-                Visiteur visiteur = new Visiteur() ;
-                visiteur.setMatricule( matricule );
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
+            requetePreparee.setString(1, matricule);
+            ResultSet resultat = requetePreparee.executeQuery();
+            if (resultat.next()) {
+                Visiteur visiteur = new Visiteur();
+                visiteur.setMatricule(matricule);
                 visiteur.setNom(resultat.getString("vis_nom"));
                 visiteur.setPrenom(resultat.getString("vis_prenom"));
 
-                requetePreparee.close() ;
-                return visiteur ;
+                requetePreparee.close();
+                return visiteur;
+            } else {
+                return null;
             }
-            else {
-                return null ;
-            }
+        } catch (Exception e) {
+            return null;
         }
-        catch( Exception e ){
-            return null ;
+    }
+
+    public static List<Praticien> getPraticiensHesitants() throws ConnexionException {
+
+        Connection connexion = ConnexionBD.getConnexion();
+
+        String requete = "SELECT Praticien.pra_num, Praticien.pra_nom\n" +
+                "FROM Praticien\n" +
+                "INNER JOIN RapportVisite\n" +
+                "ON Praticien.pra_num = RapportVisite.pra_num\n" +
+                "WHERE RapportVisite.rap_coef_confiance != 5";
+
+        try {
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
+            ResultSet resultat = requetePreparee.executeQuery();
+            if (resultat.next()) {
+                Praticien praticiens = new Praticien();
+                praticiens.setNumero(resultat.getInt("pra_num"));
+                praticiens.setNom(resultat.getString("pra_nom"));
+
+                requetePreparee.close();
+                return (List<Praticien>) praticiens;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
         }
     }
 }
