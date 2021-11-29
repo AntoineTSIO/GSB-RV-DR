@@ -4,6 +4,7 @@ import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -47,26 +48,29 @@ public class PanneauPraticiens extends StackPane {
         boutons.add(btnNotoriete, 1, 0);
         boutons.add(btnDateVisite, 2, 0);
         boutons.setAlignment(Pos.CENTER);
+        boutons.setHgap(10);
+        boutons.setVgap(10);
 
-        TableView<Praticien> tabPraticiens = new TableView<Praticien>();
-            TableColumn<Praticien, Integer> colNumero = new TableColumn<>("Numéro");
-            TableColumn<Praticien, String> colIdentite = new TableColumn<>("Identité");
-            TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
-            TableColumn<Praticien, String> colPrenom = new TableColumn<>("Prenom");
-            colIdentite.getColumns().addAll(colNom, colPrenom);
-            TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
-            colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
-            colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-            colPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-            colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
 
+        ObservableList<Praticien> praticiens = (ObservableList<Praticien>) ModeleGsbRv.getPraticiensHesitants();
+
+        TableView<Praticien> tabPraticiens = new TableView<Praticien>(praticiens);
+        TableColumn<Praticien, Integer> colNumero = new TableColumn<>("Numéro");
+        TableColumn<Praticien, String> colIdentite = new TableColumn<>("Identité");
+        TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
+        TableColumn<Praticien, String> colPrenom = new TableColumn<>("Prenom");
+        colIdentite.getColumns().addAll(colNom, colPrenom);
+        TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
+        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        colPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
         tabPraticiens.getColumns().addAll(colNumero, colIdentite, colVille);
         tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         label.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
         label.setPadding(new Insets(10,10,10,10));
-        boutons.setPadding(new Insets(10,10,10,10));
-        tabPraticiens.setPadding(new Insets(10,30,10,30));
+        boutons.setPadding(new Insets(10,10,20,10));
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-alignment: center");
         root.setBackground(new Background(
