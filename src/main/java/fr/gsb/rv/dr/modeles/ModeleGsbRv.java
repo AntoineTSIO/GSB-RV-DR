@@ -54,7 +54,7 @@ public class ModeleGsbRv {
 
         Connection connexion = ConnexionBD.getConnexion();
 
-        String requete = "SELECT Praticien.pra_num, Praticien.pra_nom, Praticien.pra_ville, Praticien.pra_coefnotoriete, rap_date_visite, rap_coef_confiance\n" +
+        String requete = "SELECT Praticien.pra_num, Praticien.pra_nom, Praticien.pra_prenom, Praticien.pra_ville, Praticien.pra_coefnotoriete, rap_date_visite, rap_coef_confiance\n" +
                 "FROM Praticien\n" +
                 "INNER JOIN RapportVisite\n" +
                 "ON Praticien.pra_num = RapportVisite.pra_num\n" +
@@ -67,6 +67,7 @@ public class ModeleGsbRv {
             while (resultat.next()) {
                 praticiens.add(new Praticien(resultat.getInt("pra_num"),
                         resultat.getString("pra_nom"),
+                        resultat.getString("pra_prenom"),
                         resultat.getString("pra_ville"),
                         resultat.getDouble("pra_coefnotoriete"),
                         resultat.getDate("rap_date_visite").toLocalDate(),

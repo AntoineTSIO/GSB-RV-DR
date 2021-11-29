@@ -1,19 +1,26 @@
 package fr.gsb.rv.dr.entites;
 
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+
 import java.time.LocalDate;
 
 public class Praticien {
 
     private int numero ;
     private String nom ;
+    private String prenom ;
     private String ville ;
     private double coefNotoriete ;
     private LocalDate dateDerniereVisite ;
     private int dernierCoefConfiance ;
 
-    public Praticien(int pra_num, String pra_nom, String pra_ville, double pra_coefnotoriete, LocalDate rap_date_visite, int rap_coef_confiance) {
+    public Praticien(int pra_num, String pra_nom, String pra_prenom, String pra_ville, double pra_coefnotoriete, LocalDate rap_date_visite, int rap_coef_confiance) {
         this.numero = pra_num;
         this.nom = pra_nom;
+        this.prenom = pra_prenom;
         this.ville = pra_ville;
         this.coefNotoriete = pra_coefnotoriete;
         this.dateDerniereVisite = rap_date_visite;
@@ -34,6 +41,14 @@ public class Praticien {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
     public String getVille() {

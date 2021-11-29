@@ -33,7 +33,7 @@ import java.util.Optional;
 
 public class Appli extends Application {
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, ConnexionException {
         MenuBar barreMenus = new MenuBar();
         Menu menuFichier = new Menu("Fichier");
         Menu menuRapports = new Menu("Rapports");
