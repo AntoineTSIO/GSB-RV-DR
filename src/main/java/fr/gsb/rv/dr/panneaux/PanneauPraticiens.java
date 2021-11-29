@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 public class PanneauPraticiens extends StackPane {
@@ -32,9 +33,20 @@ public class PanneauPraticiens extends StackPane {
         RadioButton btnNotoriete = new RadioButton("Notoriété");
         RadioButton btnDateVisite = new RadioButton("Date Visite");
 
-        label.setAlignment(Pos.CENTER);
-        label.setTextAlignment(TextAlignment.CENTER);
-        root.setStyle("-fx-alignment: center; -fx-font-weight: bold; -fx-font-size: 25");
+        btnConfiance.setToggleGroup(btnGroup);
+        btnNotoriete.setToggleGroup(btnGroup);
+        btnDateVisite.setToggleGroup(btnGroup);
+        btnConfiance.setSelected(true);
+        boutons.add(btnConfiance, 0, 0);
+        boutons.add(btnNotoriete, 1, 0);
+        boutons.add(btnDateVisite, 2, 0);
+        boutons.setAlignment(Pos.CENTER);
+
+
+
+        label.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-alignment: center");
         root.setBackground(new Background(
                 new BackgroundFill(
                         new LinearGradient(0, 0, 0, 1, true,
@@ -43,7 +55,7 @@ public class PanneauPraticiens extends StackPane {
                                 new Stop(1, Color.web("#B06AB3"))
                         ), CornerRadii.EMPTY, Insets.EMPTY
                 )));
-        root.getChildren().add(label);
+        root.getChildren().addAll(label, boutons);
         this.getChildren().add(root);
     }
 

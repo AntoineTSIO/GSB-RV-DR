@@ -151,12 +151,12 @@ public class Appli extends Application {
                         //System.out.println("[Praticiens] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
                         try {
                             List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
-                            //Collections.sort(praticiens, new ComparateurCoefConfiance());
+                            Collections.sort(praticiens, new ComparateurCoefConfiance());
                             //Collections.sort(praticiens, new ComparateurCoefNotoriete());
-                            Collections.sort(praticiens, new ComparateurDateVisite());
-                            for (Praticien unPraticien : praticiens){
-                                System.out.println(unPraticien);
-                            }
+                            //Collections.sort(praticiens, new ComparateurDateVisite());
+                            //for (Praticien unPraticien : praticiens){
+                                //System.out.println(unPraticien);
+                            //}
                         } catch (ConnexionException e) {
                             e.printStackTrace();
                         }
