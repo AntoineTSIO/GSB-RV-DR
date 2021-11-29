@@ -1,4 +1,4 @@
-package fr.gsb.rv.dr.gsbrvdr;
+package fr.gsb.rv.dr.panneaux;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

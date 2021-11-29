@@ -3,8 +3,14 @@ package fr.gsb.rv.dr.gsbrvdr;
 import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
+import fr.gsb.rv.dr.panneaux.PanneauAccueil;
+import fr.gsb.rv.dr.panneaux.PanneauPraticiens;
+import fr.gsb.rv.dr.panneaux.PanneauRapports;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
+import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
+import fr.gsb.rv.dr.utilitaires.ComparateurCoefNotoriete;
+import fr.gsb.rv.dr.utilitaires.ComparateurDateVisite;
 import fr.gsb.rv.dr.vues.VueConnexion;
 import fr.gsb.rv.dr.vues.VueErreur;
 import javafx.application.Application;
@@ -13,17 +19,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -146,13 +149,15 @@ public class Appli extends Application {
                         //System.out.println("[Praticiens] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
                         try {
                             List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+                            //Collections.sort(praticiens, new ComparateurCoefConfiance());
+                            //Collections.sort(praticiens, new ComparateurCoefNotoriete());
+                            Collections.sort(praticiens, new ComparateurDateVisite());
                             for (Praticien unPraticien : praticiens){
                                 System.out.println(unPraticien);
                             }
                         } catch (ConnexionException e) {
                             e.printStackTrace();
                         }
-
                         vuePraticiens.toFront();
                     }
                 }

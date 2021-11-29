@@ -8,4 +8,6 @@ module fr.gsb.rv.dr.gsbrvdr {
     exports fr.gsb.rv.dr.gsbrvdr;
     exports fr.gsb.rv.dr.vues;
     opens fr.gsb.rv.dr.vues to javafx.fxml;
+    exports fr.gsb.rv.dr.panneaux;
+    opens fr.gsb.rv.dr.panneaux to javafx.fxml;
 }
