@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -25,6 +26,11 @@ public class PanneauPraticiens extends StackPane {
         super();
         VBox root = new VBox();
         Label label = new Label("Sélectionner un critère de tri");
+        GridPane boutons = new GridPane();
+        ToggleGroup btnGroup = new ToggleGroup();
+        RadioButton btnConfiance = new RadioButton("Confiance");
+        RadioButton btnNotoriete = new RadioButton("Notoriété");
+        RadioButton btnDateVisite = new RadioButton("Date Visite");
 
         label.setAlignment(Pos.CENTER);
         label.setTextAlignment(TextAlignment.CENTER);
