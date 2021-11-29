@@ -1,5 +1,6 @@
 package fr.gsb.rv.dr.gsbrvdr;
 
+import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
@@ -23,6 +24,7 @@ import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class Appli extends Application {
@@ -142,6 +144,15 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         //System.out.println("[Praticiens] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
+                        try {
+                            List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+                            for (Praticien unPraticien : praticiens){
+                                System.out.println(unPraticien);
+                            }
+                        } catch (ConnexionException e) {
+                            e.printStackTrace();
+                        }
+
                         vuePraticiens.toFront();
                     }
                 }

@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModeleGsbRv {
@@ -53,25 +54,25 @@ public class ModeleGsbRv {
 
         Connection connexion = ConnexionBD.getConnexion();
 
-        String requete = "SELECT Praticien.pra_num, Praticien.pra_nom\n" +
+        String requete = "SELECT Praticien.pra_num, Praticien.pra_nom, Praticien.pra_ville, Praticien.pra_coefnotoriete, rap_date_visite, rap_coef_confiance\n" +
                 "FROM Praticien\n" +
                 "INNER JOIN RapportVisite\n" +
                 "ON Praticien.pra_num = RapportVisite.pra_num\n" +
-                "WHERE RapportVisite.rap_coef_confiance != 5";
+                "WHERE RapportVisite.rap_coef_confiance < 5";
 
         try {
             PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
             ResultSet resultat = requetePreparee.executeQuery();
-            if (resultat.next()) {
-                Praticien praticiens = new Praticien();
-                praticiens.setNumero(resultat.getInt("pra_num"));
-                praticiens.setNom(resultat.getString("pra_nom"));
-
-                requetePreparee.close();
-                return (List<Praticien>) praticiens;
-            } else {
-                return null;
+            List<Praticien> praticiens = new ArrayList<Praticien>();
+            while (resultat.next()) {
+                praticiens.add(new Praticien(resultat.getInt("pra_num"),
+                        resultat.getString("pra_nom"),
+                        resultat.getString("pra_ville"),
+                        resultat.getDouble("pra_coefnotoriete"),
+                        resultat.getDate("rap_date_visite").toLocalDate(),
+                        resultat.getInt("rap_coef_confiance")));
             }
+            return praticiens;
         } catch (Exception e) {
             return null;
         }

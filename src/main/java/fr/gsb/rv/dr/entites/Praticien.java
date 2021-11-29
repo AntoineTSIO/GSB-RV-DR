@@ -11,17 +11,13 @@ public class Praticien {
     private LocalDate dateDerniereVisite ;
     private int dernierCoefConfiance ;
 
-    public Praticien(int numero, String nom, String ville, double coefNotoriete, LocalDate dateDerniereVisite, int dernierCoefConfiance) {
-        this.numero = numero;
-        this.nom = nom;
-        this.ville = ville;
-        this.coefNotoriete = coefNotoriete;
-        this.dateDerniereVisite = dateDerniereVisite;
-        this.dernierCoefConfiance = dernierCoefConfiance;
-    }
-
-    public Praticien() {
-
+    public Praticien(int pra_num, String pra_nom, String pra_ville, double pra_coefnotoriete, LocalDate rap_date_visite, int rap_coef_confiance) {
+        this.numero = pra_num;
+        this.nom = pra_nom;
+        this.ville = pra_ville;
+        this.coefNotoriete = pra_coefnotoriete;
+        this.dateDerniereVisite = rap_date_visite;
+        this.dernierCoefConfiance = rap_coef_confiance;
     }
 
     public int getNumero() {
