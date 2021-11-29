@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -67,6 +68,7 @@ public class Appli extends Application {
         Scene scene = new Scene( root , 600 , 500 );
         primaryStage.setTitle("GSB-RV-DR");
         primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image("https://i.imgur.com/oRcuNCA.png"));
         primaryStage.show();
 
 
@@ -85,7 +87,7 @@ public class Appli extends Application {
                                         menuPraticiens.setDisable(false);
                                         itemSeDeconnecter.setDisable(false);
                                         itemSeConnecter.setDisable(true);
-                                        primaryStage.setTitle("GSB-RV-DR | " + Session.getSession().getLeVisiteur().getNom() + " " + Session.getSession().getLeVisiteur().getPrenom());
+                                        primaryStage.setTitle(Session.getSession().getLeVisiteur().getNom() + " " + Session.getSession().getLeVisiteur().getPrenom());
                                     }else{
                                         VueErreur vueErreur = new VueErreur("Erreur de connexion","Impossible de se connecter, veuillez ré-essayer","Matricule ou Mot de passe incorrect");
                                         vueErreur.showAndWait();
