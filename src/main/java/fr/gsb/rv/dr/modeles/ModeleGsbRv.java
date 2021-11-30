@@ -7,10 +7,7 @@ import fr.gsb.rv.dr.technique.ConnexionException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,27 +54,44 @@ public class ModeleGsbRv {
 
         Connection connexion = ConnexionBD.getConnexion();
 
-        String requete = "SELECT Praticien.pra_num, Praticien.pra_nom, Praticien.pra_prenom, Praticien.pra_ville, Praticien.pra_coefnotoriete, rap_date_visite, rap_coef_confiance\n" +
-                "FROM Praticien\n" +
-                "INNER JOIN RapportVisite\n" +
-                "ON Praticien.pra_num = RapportVisite.pra_num\n" +
-                "WHERE RapportVisite.rap_coef_confiance < 5";
+        String requete = """
+                    SELECT p.pra_num,
+                    p.pra_nom,
+                    p.pra_ville,
+                    p.pra_coefnotoriete,
+                    rv.rap_date_visite,
+                    rv.rap_coef_confiance
+                FROM Praticien p
+                    INNER JOIN (
+                        SELECT MAX(rap_date_visite) AS rap_date_visite,
+                            MAX(rap_coef_confiance) AS rap_coef_confiance
+                        FROM RapportVisite
+                        GROUP BY rap_num
+                    ) AS r
+                    INNER JOIN RapportVisite as rv ON p.pra_num = rv.pra_num
+                WHERE rv.rap_date_visite = r.rap_date_visite
+                    AND rv.rap_coef_confiance = r.rap_coef_confiance
+                    AND rv.rap_coef_confiance < 5;
+                                        """;
 
         try {
-            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
-            ResultSet resultat = requetePreparee.executeQuery();
-            List<Praticien> praticiens = FXCollections.observableArrayList();
+            Statement stmt = connexion.createStatement();
+            ResultSet resultat = stmt.executeQuery(requete);
+            List<Praticien> praticiens = new ArrayList<>();
             while (resultat.next()) {
-                praticiens.add(new Praticien(resultat.getInt("pra_num"),
-                        resultat.getString("pra_nom"),
-                        resultat.getString("pra_ville"),
-                        resultat.getDouble("pra_coefnotoriete"),
-                        resultat.getDate("rap_date_visite").toLocalDate(),
-                        resultat.getInt("rap_coef_confiance")));
+                Praticien praticien = new Praticien(
+                        resultat.getInt("p.pra_num"),
+                        resultat.getString("p.pra_nom"),
+                        resultat.getString("p.pra_ville"),
+                        resultat.getDouble("p.pra_coefnotoriete"),
+                        resultat.getDate("rv.rap_date_visite").toLocalDate(),
+                        resultat.getInt("rv.rap_coef_confiance"));
+                praticiens.add(praticien);
             }
             return praticiens;
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 }

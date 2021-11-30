@@ -129,8 +129,8 @@ public class Appli extends Application {
 
                         Optional<ButtonType> response = alertQuitter.showAndWait();
                         if(response.get() == btnOui){
-                            Platform.exit();
                             Session.fermer();
+                            Platform.exit();
                         }
                     }
                 }
@@ -149,17 +149,17 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         //System.out.println("[Praticiens] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
-                        try {
-                            List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
-                            Collections.sort(praticiens, new ComparateurCoefConfiance());
+                        //try {
+                            //List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+                            //Collections.sort(praticiens, new ComparateurCoefConfiance());
                             //Collections.sort(praticiens, new ComparateurCoefNotoriete());
                             //Collections.sort(praticiens, new ComparateurDateVisite());
-                            for (Praticien unPraticien : praticiens){
-                                System.out.println(unPraticien);
-                            }
-                        } catch (ConnexionException e) {
-                            e.printStackTrace();
-                        }
+                            //for (Praticien unPraticien : praticiens){
+                                //System.out.println(unPraticien);
+                            //}
+                        //} catch (ConnexionException e) {
+                            //e.printStackTrace();
+                        //}
                         vuePraticiens.toFront();
                     }
                 }

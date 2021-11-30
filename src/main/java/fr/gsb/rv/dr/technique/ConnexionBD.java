@@ -3,6 +3,7 @@ package fr.gsb.rv.dr.technique;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+
 public class ConnexionBD {
 
     private static String dbURL = "jdbc:mariadb://localhost:3306/gsbrv" ;

@@ -40,6 +40,7 @@ public class PanneauPraticiens extends StackPane {
         RadioButton btnConfiance = new RadioButton("Confiance");
         RadioButton btnNotoriete = new RadioButton("Notoriété");
         RadioButton btnDateVisite = new RadioButton("Date Visite");
+        TableView<Praticien> tabPraticiens = new TableView<>();
 
         btnConfiance.setToggleGroup(btnGroup);
         btnNotoriete.setToggleGroup(btnGroup);
@@ -52,7 +53,6 @@ public class PanneauPraticiens extends StackPane {
         boutons.setHgap(10);
         boutons.setVgap(10);
 
-        TableView<Praticien> tabPraticiens = new TableView<Praticien>();
         TableColumn<Praticien, Integer> colNumero = new TableColumn<>("Numéro");
         TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
         TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
@@ -61,18 +61,24 @@ public class PanneauPraticiens extends StackPane {
             List<Praticien> listePraticiens = ModeleGsbRv.getPraticiensHesitants();
             ObservableList<Praticien> praticiens = FXCollections.observableArrayList(listePraticiens);
 
-            colNumero.setCellValueFactory(new PropertyValueFactory<Praticien,Integer>("numero"));
-            colNom.setCellValueFactory(new PropertyValueFactory<Praticien,String>("nom"));
-            colVille.setCellValueFactory(new PropertyValueFactory<Praticien,String>("ville"));
-
-            tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
+            System.out.println(praticiens);
+            System.out.println(praticiens.getClass());
+            PropertyValueFactory<Praticien,Integer> valueNumero = new PropertyValueFactory<>("numero");
+            colNumero.setCellValueFactory(valueNumero);
+            tabPraticiens.getColumns().add(colNumero);
+            PropertyValueFactory<Praticien,String> valueNom = new PropertyValueFactory<>("nom");
+            colNom.setCellValueFactory(valueNom);
+            tabPraticiens.getColumns().add(colNom);
+            PropertyValueFactory<Praticien,String> valueVille = new PropertyValueFactory<>("ville");
+            colVille.setCellValueFactory(valueVille);
+            tabPraticiens.getColumns().add(colVille);
             tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
             for(Praticien praticien : praticiens){
-                tabPraticiens.getItems().addAll(praticien);
+                tabPraticiens.getItems().add(praticien);
             }
         }catch (ConnexionException e){
-
+            e.printStackTrace();
         }
 
         label.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
