@@ -31,7 +31,7 @@ public class PanneauPraticiens extends StackPane {
     private RadioButton rbCoefNotoriete ;
     private RadioButton rbDateVisite ;
 
-    public PanneauPraticiens() throws ConnexionException {
+    public PanneauPraticiens(){
         super();
         VBox root = new VBox();
         Label label = new Label("Sélectionner un critère de tri");
@@ -52,19 +52,28 @@ public class PanneauPraticiens extends StackPane {
         boutons.setHgap(10);
         boutons.setVgap(10);
 
-
-        ObservableList<Praticien> praticiens = (ObservableList<Praticien>) ModeleGsbRv.getPraticiensHesitants();
-
-        TableView<Praticien> tabPraticiens = new TableView<Praticien>(praticiens);
+        TableView<Praticien> tabPraticiens = new TableView<Praticien>();
         TableColumn<Praticien, Integer> colNumero = new TableColumn<>("Numéro");
         TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
         TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
-        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
-        colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
-        tabPraticiens.setItems(praticiens);
-        tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
-        tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        try{
+            List<Praticien> listePraticiens = ModeleGsbRv.getPraticiensHesitants();
+            ObservableList<Praticien> praticiens = FXCollections.observableArrayList(listePraticiens);
+
+            colNumero.setCellValueFactory(new PropertyValueFactory<Praticien,Integer>("numero"));
+            colNom.setCellValueFactory(new PropertyValueFactory<Praticien,String>("nom"));
+            colVille.setCellValueFactory(new PropertyValueFactory<Praticien,String>("ville"));
+
+            tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
+            tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+            for(Praticien praticien : praticiens){
+                tabPraticiens.getItems().addAll(praticien);
+            }
+        }catch (ConnexionException e){
+
+        }
 
         label.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
         label.setPadding(new Insets(10,10,10,10));

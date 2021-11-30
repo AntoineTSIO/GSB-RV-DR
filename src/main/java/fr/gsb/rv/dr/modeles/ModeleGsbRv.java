@@ -4,6 +4,9 @@ import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,7 +66,7 @@ public class ModeleGsbRv {
         try {
             PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
             ResultSet resultat = requetePreparee.executeQuery();
-            List<Praticien> praticiens = new ArrayList<Praticien>();
+            List<Praticien> praticiens = FXCollections.observableArrayList();
             while (resultat.next()) {
                 praticiens.add(new Praticien(resultat.getInt("pra_num"),
                         resultat.getString("pra_nom"),

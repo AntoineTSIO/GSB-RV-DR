@@ -154,9 +154,9 @@ public class Appli extends Application {
                             Collections.sort(praticiens, new ComparateurCoefConfiance());
                             //Collections.sort(praticiens, new ComparateurCoefNotoriete());
                             //Collections.sort(praticiens, new ComparateurDateVisite());
-                            //for (Praticien unPraticien : praticiens){
-                                //System.out.println(unPraticien);
-                            //}
+                            for (Praticien unPraticien : praticiens){
+                                System.out.println(unPraticien);
+                            }
                         } catch (ConnexionException e) {
                             e.printStackTrace();
                         }
