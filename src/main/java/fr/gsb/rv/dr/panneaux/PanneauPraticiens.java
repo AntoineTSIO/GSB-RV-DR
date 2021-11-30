@@ -4,6 +4,7 @@ import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -56,16 +57,13 @@ public class PanneauPraticiens extends StackPane {
 
         TableView<Praticien> tabPraticiens = new TableView<Praticien>(praticiens);
         TableColumn<Praticien, Integer> colNumero = new TableColumn<>("Numéro");
-        TableColumn<Praticien, String> colIdentite = new TableColumn<>("Identité");
         TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
-        TableColumn<Praticien, String> colPrenom = new TableColumn<>("Prenom");
-        colIdentite.getColumns().addAll(colNom, colPrenom);
         TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
         colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
-        tabPraticiens.getColumns().addAll(colNumero, colIdentite, colVille);
+        tabPraticiens.setItems(praticiens);
+        tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
         tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         label.setStyle("-fx-font-weight: bold; -fx-font-size: 20");

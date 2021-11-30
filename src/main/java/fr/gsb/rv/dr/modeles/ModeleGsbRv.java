@@ -67,7 +67,6 @@ public class ModeleGsbRv {
             while (resultat.next()) {
                 praticiens.add(new Praticien(resultat.getInt("pra_num"),
                         resultat.getString("pra_nom"),
-                        resultat.getString("pra_prenom"),
                         resultat.getString("pra_ville"),
                         resultat.getDouble("pra_coefnotoriete"),
                         resultat.getDate("rap_date_visite").toLocalDate(),
