@@ -3,7 +3,6 @@ package fr.gsb.rv.dr.panneaux;
 import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
-import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,10 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-
-import java.util.Collections;
 import java.util.List;
 
 public class PanneauPraticiens extends StackPane {
@@ -27,58 +22,46 @@ public class PanneauPraticiens extends StackPane {
     protected static int CRITERE_COEF_NOTORIETE = 2 ;
     protected static int CRITERE_DATE_VISITE = 3 ;
     private int critereTri = CRITERE_COEF_CONFIANCE ;
-    private RadioButton rbCoefConfiance ;
-    private RadioButton rbCoefNotoriete ;
-    private RadioButton rbDateVisite ;
+    private RadioButton rbCoefConfiance = new RadioButton("Confiance");
+    private RadioButton rbCoefNotoriete = new RadioButton("Notoriété");
+    private RadioButton rbDateVisite = new RadioButton("Date Visite");
+
+    private VBox root = new VBox();
+    private Label label = new Label("Sélectionner un critère de tri");
+    private GridPane boutons = new GridPane();
+    private ToggleGroup btnGroup = new ToggleGroup();
+    private TableView<Praticien> tabPraticiens = new TableView<>(this.rafraichir());
+    private TableColumn<Praticien, Integer> colNumero = new TableColumn<>("Numéro");
+    private TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
+    private TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
+    private List<Praticien> praticiens ;
 
     public PanneauPraticiens(){
         super();
-        VBox root = new VBox();
-        Label label = new Label("Sélectionner un critère de tri");
-        GridPane boutons = new GridPane();
-        ToggleGroup btnGroup = new ToggleGroup();
-        RadioButton btnConfiance = new RadioButton("Confiance");
-        RadioButton btnNotoriete = new RadioButton("Notoriété");
-        RadioButton btnDateVisite = new RadioButton("Date Visite");
-        TableView<Praticien> tabPraticiens = new TableView<>();
 
-        btnConfiance.setToggleGroup(btnGroup);
-        btnNotoriete.setToggleGroup(btnGroup);
-        btnDateVisite.setToggleGroup(btnGroup);
-        btnConfiance.setSelected(true);
-        boutons.add(btnConfiance, 0, 0);
-        boutons.add(btnNotoriete, 1, 0);
-        boutons.add(btnDateVisite, 2, 0);
+        rbCoefConfiance.setToggleGroup(btnGroup);
+        rbCoefNotoriete.setToggleGroup(btnGroup);
+        rbDateVisite.setToggleGroup(btnGroup);
+        rbCoefConfiance.setSelected(true);
+        boutons.add(rbCoefConfiance, 0, 0);
+        boutons.add(rbCoefNotoriete, 1, 0);
+        boutons.add(rbDateVisite, 2, 0);
         boutons.setAlignment(Pos.CENTER);
         boutons.setHgap(10);
         boutons.setVgap(10);
 
-        TableColumn<Praticien, Integer> colNumero = new TableColumn<>("Numéro");
-        TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
-        TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
+        System.out.println(praticiens);
+        System.out.println(praticiens.getClass());
+        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        tabPraticiens.getColumns().add(colNumero);
+        colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        tabPraticiens.getColumns().add(colNom);
+        colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
+        tabPraticiens.getColumns().add(colVille);
+        tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        try{
-            List<Praticien> listePraticiens = ModeleGsbRv.getPraticiensHesitants();
-            ObservableList<Praticien> praticiens = FXCollections.observableArrayList(listePraticiens);
-
-            System.out.println(praticiens);
-            System.out.println(praticiens.getClass());
-            PropertyValueFactory<Praticien,Integer> valueNumero = new PropertyValueFactory<>("numero");
-            colNumero.setCellValueFactory(valueNumero);
-            tabPraticiens.getColumns().add(colNumero);
-            PropertyValueFactory<Praticien,String> valueNom = new PropertyValueFactory<>("nom");
-            colNom.setCellValueFactory(valueNom);
-            tabPraticiens.getColumns().add(colNom);
-            PropertyValueFactory<Praticien,String> valueVille = new PropertyValueFactory<>("ville");
-            colVille.setCellValueFactory(valueVille);
-            tabPraticiens.getColumns().add(colVille);
-            tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-            for(Praticien praticien : praticiens){
-                tabPraticiens.getItems().add(praticien);
-            }
-        }catch (ConnexionException e){
-            e.printStackTrace();
+        for(Praticien praticien : praticiens){
+            tabPraticiens.getItems().add(praticien);
         }
 
         label.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
@@ -98,7 +81,14 @@ public class PanneauPraticiens extends StackPane {
         this.getChildren().add(root);
     }
 
-    public void rafraichir(){
+    public ObservableList rafraichir() {
+        try {
+            this.praticiens = ModeleGsbRv.getPraticiensHesitants();
+        } catch (ConnexionException e) {
+            e.printStackTrace();
+        }
+        this.praticiens = FXCollections.observableArrayList(this.praticiens);
+        return (ObservableList) this.praticiens;
 
     }
 

@@ -78,7 +78,7 @@ public class Praticien {
 
     @Override
     public String toString() {
-        return "Praticien{" +
+        return "{" +
                 "numero='" + numero + '\'' +
                 ", nom='" + nom + '\'' +
                 ", ville='" + ville + '\'' +

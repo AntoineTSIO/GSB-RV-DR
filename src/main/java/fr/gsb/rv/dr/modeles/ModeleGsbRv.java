@@ -54,6 +54,8 @@ public class ModeleGsbRv {
 
         Connection connexion = ConnexionBD.getConnexion();
 
+        List<Praticien> praticiens = FXCollections.observableArrayList();
+
         String requete = """
                     SELECT p.pra_num,
                     p.pra_nom,
@@ -77,7 +79,6 @@ public class ModeleGsbRv {
         try {
             Statement stmt = connexion.createStatement();
             ResultSet resultat = stmt.executeQuery(requete);
-            List<Praticien> praticiens = new ArrayList<>();
             while (resultat.next()) {
                 Praticien praticien = new Praticien(
                         resultat.getInt("p.pra_num"),
@@ -92,6 +93,6 @@ public class ModeleGsbRv {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return praticiens;
     }
 }
