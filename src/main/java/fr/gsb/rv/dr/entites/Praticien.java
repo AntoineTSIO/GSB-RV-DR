@@ -29,7 +29,7 @@ public class Praticien {
     }
 
     public int getNumero() {
-        return numero;
+        return this.numero;
     }
 
     public void setNumero(int numero) {
@@ -37,7 +37,7 @@ public class Praticien {
     }
 
     public String getNom() {
-        return nom;
+        return this.nom;
     }
 
     public void setNom(String nom) {
@@ -45,7 +45,7 @@ public class Praticien {
     }
 
     public String getVille() {
-        return ville;
+        return this.ville;
     }
 
     public void setVille(String ville) {
@@ -53,7 +53,7 @@ public class Praticien {
     }
 
     public double getCoefNotoriete() {
-        return coefNotoriete;
+        return this.coefNotoriete;
     }
 
     public void setCoefNotoriete(double coefNotoriete) {
@@ -61,7 +61,7 @@ public class Praticien {
     }
 
     public LocalDate getDateDerniereVisite() {
-        return dateDerniereVisite;
+        return this.dateDerniereVisite;
     }
 
     public void setDateDerniereVisite(LocalDate dateDerniereVisite) {
@@ -69,7 +69,7 @@ public class Praticien {
     }
 
     public int getDernierCoefConfiance() {
-        return dernierCoefConfiance;
+        return this.dernierCoefConfiance;
     }
 
     public void setDernierCoefConfiance(int dernierCoefConfiance) {
@@ -78,8 +78,8 @@ public class Praticien {
 
     @Override
     public String toString() {
-        return "{" +
-                "numero='" + numero + '\'' +
+        return "Praticien{" +
+                "numero=" + numero +
                 ", nom='" + nom + '\'' +
                 ", ville='" + ville + '\'' +
                 ", coefNotoriete=" + coefNotoriete +

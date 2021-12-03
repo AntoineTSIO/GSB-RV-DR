@@ -35,10 +35,11 @@ public class PanneauPraticiens extends StackPane {
     private TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
     private TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
     private List<Praticien> praticiens ;
+    private ObservableList<Praticien> observableListPraticiens ;
 
     public PanneauPraticiens(){
         super();
-
+        System.out.println(praticiens);
         rbCoefConfiance.setToggleGroup(btnGroup);
         rbCoefNotoriete.setToggleGroup(btnGroup);
         rbDateVisite.setToggleGroup(btnGroup);
@@ -49,9 +50,6 @@ public class PanneauPraticiens extends StackPane {
         boutons.setAlignment(Pos.CENTER);
         boutons.setHgap(10);
         boutons.setVgap(10);
-
-        System.out.println(praticiens);
-        System.out.println(praticiens.getClass());
         colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
         tabPraticiens.getColumns().add(colNumero);
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -60,9 +58,9 @@ public class PanneauPraticiens extends StackPane {
         tabPraticiens.getColumns().add(colVille);
         tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        for(Praticien praticien : praticiens){
-            tabPraticiens.getItems().add(praticien);
-        }
+        observableListPraticiens = FXCollections.observableArrayList(this.praticiens);
+        System.out.println(observableListPraticiens);
+        tabPraticiens.setItems(observableListPraticiens);
 
         label.setStyle("-fx-font-weight: bold; -fx-font-size: 20");
         label.setPadding(new Insets(10,10,10,10));
@@ -87,8 +85,8 @@ public class PanneauPraticiens extends StackPane {
         } catch (ConnexionException e) {
             e.printStackTrace();
         }
-        this.praticiens = FXCollections.observableArrayList(this.praticiens);
-        return (ObservableList) this.praticiens;
+        observableListPraticiens = FXCollections.observableArrayList(this.praticiens);
+        return observableListPraticiens;
 
     }
 
