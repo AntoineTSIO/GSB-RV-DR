@@ -1,6 +1,7 @@
 package fr.gsb.rv.dr.gsbrvdr;
 
 import fr.gsb.rv.dr.entites.Praticien;
+import fr.gsb.rv.dr.entites.RapportVisite;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.panneaux.PanneauAccueil;
@@ -140,6 +141,31 @@ public class Appli extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         //System.out.println("[Rapport] " + Session.getSession().getLeVisiteur().getPrenom() + " " + Session.getSession().getLeVisiteur().getNom());
+                        /*try {
+                            List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
+                            for(Visiteur unVisiteur : visiteurs){
+                                System.out.println(unVisiteur);
+                            }
+                        } catch (ConnexionException e) {
+                            e.printStackTrace();
+                        }*/
+                        /*try {
+                            List<RapportVisite> rapportsVisites = ModeleGsbRv.getRapportsVisite("c3", 12, 2021);
+                            for (RapportVisite unRapportVisite : rapportsVisites) {
+                                System.out.println(unRapportVisite);
+                            }
+                        }catch (ConnexionException e){
+                            e.printStackTrace();
+                        }*/
+                        /*try {
+                            ModeleGsbRv.setRapportVisiteLu("c3", 15);
+                            List<RapportVisite> rapportsVisites = ModeleGsbRv.getRapportsVisite("c3", 12, 2021);
+                            for (RapportVisite unRapportVisite : rapportsVisites) {
+                                System.out.println(unRapportVisite);
+                            }
+                        }catch (ConnexionException e){
+                            e.printStackTrace();
+                        }*/
                         vueRapports.toFront();
                     }
                 }

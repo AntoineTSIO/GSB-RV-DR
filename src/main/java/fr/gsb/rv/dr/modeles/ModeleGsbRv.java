@@ -1,11 +1,11 @@
 package fr.gsb.rv.dr.modeles;
 
 import fr.gsb.rv.dr.entites.Praticien;
+import fr.gsb.rv.dr.entites.RapportVisite;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -114,7 +114,9 @@ public class ModeleGsbRv {
             ResultSet resultat = stmt.executeQuery(requete);
             while (resultat.next()) {
                 Visiteur visiteur = new Visiteur(
-
+                        resultat.getString("vis_matricule"),
+                        resultat.getString("vis_nom"),
+                        resultat.getString("vis_nom")
                         );
                 visiteurs.add(visiteur);
             }
@@ -123,5 +125,63 @@ public class ModeleGsbRv {
             e.printStackTrace();
         }
         return visiteurs;
+    }
+
+    public static List<RapportVisite> getRapportsVisite(String matricule , int mois, int année) throws ConnexionException {
+
+        Connection connexion = ConnexionBD.getConnexion();
+
+        List<RapportVisite> rapportsVisites = FXCollections.observableArrayList();
+
+        String requete = "SELECT rv.rap_num, rv.rap_date_visite, rv.rap_date_saisie, rv.rap_bilan, rv.rap_motif, rv.rap_coef_confiance, rv.rap_lu " +
+                "FROM RapportVisite rv " +
+                "INNER JOIN Visiteur as v " +
+                "ON rv.vis_matricule = v.vis_matricule " +
+                "WHERE v.vis_matricule = ? " +
+                "AND MONTH(rv.rap_date_visite) = ? " +
+                "AND YEAR(rv.rap_date_visite) = ?";
+
+        try {
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
+            requetePreparee.setString(1, matricule);
+            requetePreparee.setInt(2, mois);
+            requetePreparee.setInt(3, année);
+            ResultSet resultat = requetePreparee.executeQuery();
+            while (resultat.next()) {
+                RapportVisite rapportVisite = new RapportVisite(
+                        resultat.getInt("rap_num"),
+                        resultat.getDate("rap_date_visite").toLocalDate(),
+                        resultat.getDate("rap_date_saisie").toLocalDate(),
+                        resultat.getString("rap_bilan"),
+                        resultat.getString("rap_motif"),
+                        resultat.getInt("rap_coef_confiance"),
+                        resultat.getBoolean("rap_lu")
+                );
+                rapportsVisites.add(rapportVisite);
+            }
+            return rapportsVisites;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rapportsVisites;
+    }
+
+    public static void setRapportVisiteLu(String matricule , int numRapport) throws ConnexionException {
+
+        Connection connexion = ConnexionBD.getConnexion();
+
+        String requete = "UPDATE RapportVisite " +
+                "SET rap_lu = true " +
+                "WHERE vis_matricule = ?" +
+                "AND rap_num = ? ;";
+
+        try {
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
+            requetePreparee.setString(1, matricule);
+            requetePreparee.setInt(2,numRapport);
+            requetePreparee.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
