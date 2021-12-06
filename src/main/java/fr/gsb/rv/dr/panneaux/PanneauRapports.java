@@ -1,33 +1,28 @@
 package fr.gsb.rv.dr.panneaux;
 
 import fr.gsb.rv.dr.entites.Praticien;
+import fr.gsb.rv.dr.entites.RapportVisite;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Mois;
 import fr.gsb.rv.dr.entites.Visiteur;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.util.Callback;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 public class PanneauRapports extends StackPane {
 
@@ -63,8 +58,8 @@ public class PanneauRapports extends StackPane {
 
             TableColumn<Visiteur, Integer> colNumero = new TableColumn<>("Numéro");
             TableColumn<Visiteur, String> colPraticien = new TableColumn<>("Praticien");
-            TableColumn<Visiteur, String> colNom = new TableColumn<>("Nom");
-            TableColumn<Visiteur, String> colVille = new TableColumn<>("Ville");
+            TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
+            TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
             TableColumn<Visiteur, LocalDate> colVisite = new TableColumn<>("Visite");
             TableColumn<Visiteur, String> colRedaction = new TableColumn<>("Rédaction");
 
@@ -79,16 +74,53 @@ public class PanneauRapports extends StackPane {
             );
             colVille.setCellValueFactory(
                     param -> {
-                        String ville = param.getValue().
+                        String ville = param.getValue().getVille();
+                        return new SimpleStringProperty(ville);
                     }
             );
-            colVisite.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
+            colPraticien.getColumns().addAll(colNom, colVille);
+            visiteurTableView.getColumns().add(colPraticien);
+
+            colVisite.setCellValueFactory(
+                    colonne -> {
+                        return new TableCell<RapportVisite, LocalDate>(){
+                            @Override
+                            protected void updateItem( LocalDate item, boolean empty){
+                                super.updateItem( item, empty );
+                                if(empty){
+                                    setText("");
+                                }else{
+                                    DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                                    setText(item.format(formateur));
+                                }
+                            }
+                        }
+                    }
+            );
             visiteurTableView.getColumns().add(colVisite);
 
             visiteurTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
             visiteurTableView.setItems(visiteurObservableList);
             this.rafraichir();
+
+            visiteurTableView.setRowFactory(
+                    ligne -> {
+                        return new TableRow<RapportVisite>(){
+                            @Override
+                            protected void updateItem( RapportVisite item, boolean empty){
+                                super.updateItem(item, empty);
+                                if(item != null ){
+                                    if(item.isLu()){
+                                        setStyle("-fx-background-color: gold");
+                                    }else{
+                                        setStyle("-fx-background-color: cyan");
+                                    }
+                                }
+                            }
+                        }
+                    }
+            );
 
             root.getChildren().add(visiteurTableView);
         } catch (ConnexionException e) {
