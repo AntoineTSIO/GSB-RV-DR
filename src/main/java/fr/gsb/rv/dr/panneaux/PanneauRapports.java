@@ -27,11 +27,10 @@ import java.util.List;
 public class PanneauRapports extends StackPane {
 
     private ComboBox<Visiteur> cbVisiteurs = new ComboBox<>(FXCollections.observableArrayList(ModeleGsbRv.getVisiteurs()));
-    ;
     private ComboBox<Mois> cbMois = new ComboBox<Mois>(FXCollections.observableArrayList(Mois.values()));
     private ComboBox<Integer> cbAnnee = new ComboBox<Integer>(FXCollections.observableArrayList(ModeleGsbRv.getAnnee()));
     private Button btnValider = new Button("Valider");
-    private TableView<Visiteur> visiteurTableView = new TableView<>();
+    private TableView<RapportVisite> rapportVisiteTableView = new TableView<>();
 
     private List<Visiteur> visiteurList;
     private ObservableList<Visiteur> visiteurObservableList;
@@ -56,15 +55,15 @@ public class PanneauRapports extends StackPane {
             visiteurList = ModeleGsbRv.getRapportsVisite();
             visiteurObservableList = FXCollections.observableArrayList(visiteurList);
 
-            TableColumn<Visiteur, Integer> colNumero = new TableColumn<>("Numéro");
-            TableColumn<Visiteur, String> colPraticien = new TableColumn<>("Praticien");
+            TableColumn<RapportVisite, Integer> colNumero = new TableColumn<>("Numéro");
+            TableColumn<RapportVisite, String> colPraticien = new TableColumn<>("Praticien");
             TableColumn<Praticien, String> colNom = new TableColumn<>("Nom");
             TableColumn<Praticien, String> colVille = new TableColumn<>("Ville");
-            TableColumn<Visiteur, LocalDate> colVisite = new TableColumn<>("Visite");
-            TableColumn<Visiteur, String> colRedaction = new TableColumn<>("Rédaction");
+            TableColumn<RapportVisite, LocalDate> colVisite = new TableColumn<>("Visite");
+            TableColumn<RapportVisite, String> colRedaction = new TableColumn<>("Rédaction");
 
             colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
-            visiteurTableView.getColumns().add(colNumero);
+            rapportVisiteTableView.getColumns().add(colNumero);
 
             colNom.setCellValueFactory(
                     param -> {
@@ -79,7 +78,7 @@ public class PanneauRapports extends StackPane {
                     }
             );
             colPraticien.getColumns().addAll(colNom, colVille);
-            visiteurTableView.getColumns().add(colPraticien);
+            rapportVisiteTableView.getColumns().add(colPraticien);
 
             colVisite.setCellValueFactory(
                     colonne -> {
@@ -97,14 +96,14 @@ public class PanneauRapports extends StackPane {
                         }
                     }
             );
-            visiteurTableView.getColumns().add(colVisite);
+            rapportVisiteTableView.getColumns().add(colVisite);
 
-            visiteurTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            rapportVisiteTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-            visiteurTableView.setItems(visiteurObservableList);
+            rapportVisiteTableView.setItems(visiteurObservableList);
             this.rafraichir();
 
-            visiteurTableView.setRowFactory(
+            rapportVisiteTableView.setRowFactory(
                     ligne -> {
                         return new TableRow<RapportVisite>(){
                             @Override
@@ -118,11 +117,11 @@ public class PanneauRapports extends StackPane {
                                     }
                                 }
                             }
-                        }
+                        };
                     }
             );
 
-            root.getChildren().add(visiteurTableView);
+            root.getChildren().add(rapportVisiteTableView);
         } catch (ConnexionException e) {
             e.printStackTrace();
         }
