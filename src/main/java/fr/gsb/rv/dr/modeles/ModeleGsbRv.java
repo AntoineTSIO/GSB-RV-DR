@@ -95,4 +95,33 @@ public class ModeleGsbRv {
         }
         return praticiens;
     }
+
+    public static List<Visiteur> getVisiteurs() throws ConnexionException {
+
+        Connection connexion = ConnexionBD.getConnexion();
+
+        List<Visiteur> visiteurs = new ArrayList<>();
+
+        String requete = """
+                    SELECT vis_matricule, 
+                        vis_nom, 
+                        vis_prenom
+                    FROM Visiteur ;
+                    """;
+
+        try {
+            Statement stmt = connexion.createStatement();
+            ResultSet resultat = stmt.executeQuery(requete);
+            while (resultat.next()) {
+                Visiteur visiteur = new Visiteur(
+
+                        );
+                visiteurs.add(visiteur);
+            }
+            return visiteurs;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return visiteurs;
+    }
 }
