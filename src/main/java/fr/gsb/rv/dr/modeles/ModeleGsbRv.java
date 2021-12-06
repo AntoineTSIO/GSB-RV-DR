@@ -8,6 +8,7 @@ import fr.gsb.rv.dr.technique.ConnexionException;
 import javafx.collections.FXCollections;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +117,7 @@ public class ModeleGsbRv {
                 Visiteur visiteur = new Visiteur(
                         resultat.getString("vis_matricule"),
                         resultat.getString("vis_nom"),
-                        resultat.getString("vis_nom")
+                        resultat.getString("vis_prenom")
                         );
                 visiteurs.add(visiteur);
             }
@@ -183,5 +184,19 @@ public class ModeleGsbRv {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<Integer> getAnnee(){
+
+        List<Integer> annees = FXCollections.observableArrayList();
+
+        LocalDate dateActuelle = LocalDate.now();
+        int anneeActuelle = dateActuelle.getYear();
+        int i = anneeActuelle ;
+        while (i != anneeActuelle - 5){
+            annees.add(i);
+            i -= 1 ;
+        }
+        return annees;
     }
 }

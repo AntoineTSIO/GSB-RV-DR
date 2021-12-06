@@ -12,4 +12,5 @@ module fr.gsb.rv.dr.gsbrvdr {
     opens fr.gsb.rv.dr.panneaux to javafx.fxml;
 
     opens fr.gsb.rv.dr.entites to javafx.graphics, javafx.fxml, javafx.base;
+    opens fr.gsb.rv.dr.technique to javafx.base, javafx.fxml, javafx.graphics;
 }
