@@ -14,11 +14,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import org.w3c.dom.events.MouseEvent;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +31,10 @@ public class PanneauRapports extends StackPane {
     private ComboBox<Visiteur> cbVisiteurs = new ComboBox<>(FXCollections.observableArrayList(ModeleGsbRv.getVisiteurs()));
     private ComboBox<Mois> cbMois = new ComboBox<Mois>(FXCollections.observableArrayList(Mois.values()));
     private ComboBox<Integer> cbAnnee = new ComboBox<Integer>(FXCollections.observableArrayList(ModeleGsbRv.getAnnee()));
+    private String matricule = String.valueOf(cbVisiteurs.getSelectionModel().getSelectedItem());
+    private Mois mois = cbMois.getSelectionModel().getSelectedItem();
+    private int année = cbAnnee.getSelectionModel().getSelectedItem();
+
     private Button btnValider = new Button("Valider");
     private TableView<RapportVisite> rapportVisiteTableView = new TableView<>();
 
@@ -121,6 +127,14 @@ public class PanneauRapports extends StackPane {
                     }
             );
 
+            rapportVisiteTableView.setOnMouseClicked(
+                    (MouseEvent event) -> {
+                        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
+                            int indiceRapport = rapportVisiteTableView.getSelectionModel().getSelectedIndex() ;
+                        }
+                    }
+            );
+
             root.getChildren().add(rapportVisiteTableView);
         } catch (ConnexionException e) {
             e.printStackTrace();
@@ -141,11 +155,10 @@ public class PanneauRapports extends StackPane {
 
     public void rafraichir() {
         try {
-            visiteurList = ModeleGsbRv.getRapportsVisite(matricule, mois, mois);
+            visiteurList = ModeleGsbRv.getRapportsVisite(matricule, mois, année);
             visiteurObservableList = FXCollections.observableArrayList(visiteurList);
         } catch (ConnexionException e) {
             e.printStackTrace();
         }
-
     }
 }
