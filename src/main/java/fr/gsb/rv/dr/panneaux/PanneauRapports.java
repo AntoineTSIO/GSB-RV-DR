@@ -31,9 +31,6 @@ public class PanneauRapports extends StackPane {
     private ComboBox<Visiteur> cbVisiteurs = new ComboBox<>(FXCollections.observableArrayList(ModeleGsbRv.getVisiteurs()));
     private ComboBox<Mois> cbMois = new ComboBox<Mois>(FXCollections.observableArrayList(Mois.values()));
     private ComboBox<Integer> cbAnnee = new ComboBox<Integer>(FXCollections.observableArrayList(ModeleGsbRv.getAnnee()));
-    private String matricule = cbVisiteurs.getValue().getMatricule();
-    private int mois = cbMois.getValue().ordinal();
-    private int année = cbAnnee.getValue();
 
     private Button btnValider = new Button("Valider");
     private TableView<RapportVisite> rapportVisiteTableView = new TableView<>();
@@ -48,7 +45,8 @@ public class PanneauRapports extends StackPane {
         boutons.add(cbVisiteurs, 0, 0);
         boutons.add(cbMois, 1, 0);
         boutons.add(cbAnnee, 2, 0);
-        boutons.add(btnValider, 0, 1);
+        boutons.add(btnValider, 5, 0);
+        boutons.setPadding(new Insets(0,0,20,0));
         btnValider.setOnAction(
                 new EventHandler<ActionEvent>() {
                     @Override
@@ -57,75 +55,74 @@ public class PanneauRapports extends StackPane {
                     }
                 }
         );
-        try{
-            rapportVisiteList = ModeleGsbRv.getRapportsVisite(matricule , mois , année);
-            rapportVisiteObservableList = FXCollections.observableArrayList(rapportVisiteList);
+        cbVisiteurs.setValue(new Visiteur("a17", "Andre", "David"));
+        cbMois.setValue(Mois.Janvier);
+        cbAnnee.setValue(2021);
+        TableColumn<RapportVisite, Integer> colNumero = new TableColumn<>("Numéro");
+        TableColumn<RapportVisite, String> colPraticien = new TableColumn<>("Praticien");
+        TableColumn<RapportVisite, String> colNom = new TableColumn<>("Nom");
+        TableColumn<RapportVisite, String> colVille = new TableColumn<>("Ville");
+        TableColumn<RapportVisite, LocalDate> colVisite = new TableColumn<>("Visite");
+        TableColumn<RapportVisite, String> colRedaction = new TableColumn<>("Rédaction");
 
-            TableColumn<RapportVisite, Integer> colNumero = new TableColumn<>("Numéro");
-            TableColumn<RapportVisite, String> colPraticien = new TableColumn<>("Praticien");
-            TableColumn<RapportVisite, String> colNom = new TableColumn<>("Nom");
-            TableColumn<RapportVisite, String> colVille = new TableColumn<>("Ville");
-            TableColumn<RapportVisite, LocalDate> colVisite = new TableColumn<>("Visite");
-            TableColumn<RapportVisite, String> colRedaction = new TableColumn<>("Rédaction");
+        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        rapportVisiteTableView.getColumns().add(colNumero);
 
-            colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
-            rapportVisiteTableView.getColumns().add(colNumero);
+        colNom.setCellValueFactory(
+                param -> {
+                    String nom = param.getValue().getPraticien().getNom();
+                    return new SimpleStringProperty(nom);
+                }
+        );
+        colVille.setCellValueFactory(
+                param -> {
+                    String ville = param.getValue().getPraticien().getVille();
+                    return new SimpleStringProperty(ville);
+                }
+        );
+        colPraticien.getColumns().addAll(colNom, colVille);
+        rapportVisiteTableView.getColumns().add(colPraticien);
 
-            colNom.setCellValueFactory(
-                    param -> {
-                        String nom = param.getValue().getPraticien().getNom();
-                        return new SimpleStringProperty(nom);
-                    }
-            );
-            colVille.setCellValueFactory(
-                    param -> {
-                        String ville = param.getValue().getPraticien().getVille();
-                        return new SimpleStringProperty(ville);
-                    }
-            );
-            colPraticien.getColumns().addAll(colNom, colVille);
-            rapportVisiteTableView.getColumns().add(colPraticien);
+        colVisite.setCellFactory(
+                colonne -> {
+                    return new TableCell<RapportVisite, LocalDate>(){
+                        @Override
+                        protected void updateItem( LocalDate item, boolean empty){
+                            super.updateItem( item, empty );
+                            if(empty){
+                                setText("");
+                            }else{
+                                DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                                setText(item.format(formateur));
+                            }
+                        }
+                    };
+                }
+        );
+        rapportVisiteTableView.getColumns().add(colVisite);
 
-            colVisite.setCellFactory(
-                    colonne -> {
-                        return new TableCell<RapportVisite, LocalDate>(){
-                            @Override
-                            protected void updateItem( LocalDate item, boolean empty){
-                                super.updateItem( item, empty );
-                                if(empty){
-                                    setText("");
+        colRedaction.setCellValueFactory(new PropertyValueFactory<>("rap_date_saisie"));
+        rapportVisiteTableView.getColumns().add(colRedaction);
+
+        rapportVisiteTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        rapportVisiteTableView.setRowFactory(
+                ligne -> {
+                    return new TableRow<RapportVisite>(){
+                        @Override
+                        protected void updateItem( RapportVisite item, boolean empty){
+                            super.updateItem(item, empty);
+                            if(item != null ){
+                                if(item.isLu()){
+                                    setStyle("-fx-background-color: gold");
                                 }else{
-                                    DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-                                    setText(item.format(formateur));
+                                    setStyle("-fx-background-color: cyan");
                                 }
                             }
-                        };
-                    }
-            );
-            rapportVisiteTableView.getColumns().add(colVisite);
-
-            rapportVisiteTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-            rapportVisiteTableView.setItems(rapportVisiteObservableList);
-            this.rafraichir();
-
-            rapportVisiteTableView.setRowFactory(
-                    ligne -> {
-                        return new TableRow<RapportVisite>(){
-                            @Override
-                            protected void updateItem( RapportVisite item, boolean empty){
-                                super.updateItem(item, empty);
-                                if(item != null ){
-                                    if(item.isLu()){
-                                        setStyle("-fx-background-color: gold");
-                                    }else{
-                                        setStyle("-fx-background-color: cyan");
-                                    }
-                                }
-                            }
-                        };
-                    }
-            );
+                        }
+                    };
+                }
+        );
 
             /*rapportVisiteTableView.setOnMouseClicked(
                     (MouseEvent event) -> {
@@ -134,11 +131,6 @@ public class PanneauRapports extends StackPane {
                         }
                     }
             );*/
-
-            root.getChildren().add(rapportVisiteTableView);
-        } catch (ConnexionException e) {
-            e.printStackTrace();
-        }
 
         root.setBackground(new Background(
                 new BackgroundFill(
@@ -149,14 +141,19 @@ public class PanneauRapports extends StackPane {
                         ), CornerRadii.EMPTY, Insets.EMPTY
                 )));
         root.getChildren().add(boutons);
+        root.getChildren().add(rapportVisiteTableView);
         root.setPadding(new Insets(20, 20, 20, 20));
         this.getChildren().add(root);
     }
 
     public void rafraichir() {
         try {
+            String matricule = cbVisiteurs.getValue().getMatricule();
+            int mois = cbMois.getValue().ordinal();
+            int année = cbAnnee.getValue();
             rapportVisiteList = ModeleGsbRv.getRapportsVisite(matricule, mois, année);
             rapportVisiteObservableList = FXCollections.observableArrayList(rapportVisiteList);
+            rapportVisiteTableView.setItems(rapportVisiteObservableList);
         } catch (ConnexionException e) {
             e.printStackTrace();
         }
