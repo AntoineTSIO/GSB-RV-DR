@@ -24,6 +24,10 @@ public class RapportVisite {
         this.lu = lu;
     }
 
+    public RapportVisite() {
+
+    }
+
     public int getNumero() {
         return this.numero;
     }

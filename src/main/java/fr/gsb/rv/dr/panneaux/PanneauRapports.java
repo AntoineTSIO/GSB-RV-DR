@@ -124,13 +124,24 @@ public class PanneauRapports extends StackPane {
                 }
         );
 
-            /*rapportVisiteTableView.setOnMouseClicked(
-                    (MouseEvent event) -> {
-                        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
-                            int indiceRapport = rapportVisiteTableView.getSelectionModel().getSelectedIndex() ;
+        /*rapportVisiteTableView.setOnMouseClicked(
+                (MouseEvent event) -> {
+                    if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
+                        int indiceRapport = rapportVisiteTableView.getSelectionModel().getSelectedIndex() ;
+                        try{
+                            ModeleGsbRv.setRapportVisiteLu(cbVisiteurs.getValue().getMatricule(), indiceRapport);
+                            String matricule = cbVisiteurs.getSelectionModel().getSelectedItem().getMatricule();
+                            int mois = cbMois.getSelectionModel().getSelectedItem().ordinal();
+                            int année = cbAnnee.getSelectionModel().getSelectedItem();
+                            rapportVisiteList = ModeleGsbRv.getRapportsVisite(matricule, mois, année);
+                            RapportVisite rapportVisite = new RapportVisite();
+                            this.rafraichir();
+                        } catch (ConnexionException e) {
+                            e.printStackTrace();
                         }
                     }
-            );*/
+                }
+        );*/
 
         root.setBackground(new Background(
                 new BackgroundFill(
@@ -148,9 +159,10 @@ public class PanneauRapports extends StackPane {
 
     public void rafraichir() {
         try {
-            String matricule = cbVisiteurs.getValue().getMatricule();
-            int mois = cbMois.getValue().ordinal();
-            int année = cbAnnee.getValue();
+            String matricule = cbVisiteurs.getSelectionModel().getSelectedItem().getMatricule();
+            int mois = cbMois.getSelectionModel().getSelectedItem().ordinal() +1;
+            int année = cbAnnee.getSelectionModel().getSelectedItem();
+            System.out.println(matricule + ", " + mois +", " + année);
             rapportVisiteList = ModeleGsbRv.getRapportsVisite(matricule, mois, année);
             rapportVisiteObservableList = FXCollections.observableArrayList(rapportVisiteList);
             rapportVisiteTableView.setItems(rapportVisiteObservableList);
