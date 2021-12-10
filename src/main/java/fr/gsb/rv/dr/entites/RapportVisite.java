@@ -11,6 +11,8 @@ public class RapportVisite {
     private String motif ;
     private int coefConfiance ;
     private boolean lu ;
+    private Visiteur visiteur ;
+    private Praticien praticien ;
 
     public RapportVisite(int numero, LocalDate dateVisite, LocalDate dateRedaction, String bilan, String motif, int coefConfiance, boolean lu) {
         this.numero = numero;
@@ -78,6 +80,22 @@ public class RapportVisite {
         this.lu = lu;
     }
 
+    public Visiteur getVisiteur() {
+        return visiteur;
+    }
+
+    public void setVisiteur(Visiteur visiteur) {
+        this.visiteur = visiteur;
+    }
+
+    public Praticien getPraticien() {
+        return praticien;
+    }
+
+    public void setPraticien(Praticien praticien) {
+        this.praticien = praticien;
+    }
+
     @Override
     public String toString() {
         return "RapportVisite{" +
@@ -88,6 +106,8 @@ public class RapportVisite {
                 ", motif='" + motif + '\'' +
                 ", coefConfiance=" + coefConfiance +
                 ", lu=" + lu +
+                ", visiteur=" + visiteur +
+                ", praticien=" + praticien +
                 '}';
     }
 }
