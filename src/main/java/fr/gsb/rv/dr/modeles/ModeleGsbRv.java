@@ -98,18 +98,14 @@ public class ModeleGsbRv {
     }
 
     public static List<Visiteur> getVisiteurs() throws ConnexionException {
-
         Connection connexion = ConnexionBD.getConnexion();
-
         List<Visiteur> visiteurs = new ArrayList<>();
-
         String requete = """
                     SELECT vis_matricule, 
                         vis_nom, 
                         vis_prenom
                     FROM Visiteur ;
                     """;
-
         try {
             Statement stmt = connexion.createStatement();
             ResultSet resultat = stmt.executeQuery(requete);
@@ -134,7 +130,7 @@ public class ModeleGsbRv {
 
         List<RapportVisite> rapportsVisites = FXCollections.observableArrayList();
 
-        String requete = "SELECT rv.rap_num, rv.rap_date_visite, rv.rap_date_saisie, rv.rap_bilan, rv.rap_motif, rv.rap_coef_confiance, rv.rap_lu " +
+        String requete = "SELECT rv.rap_num, rv.rap_date_visite, rv.rap_date_saisie, rv.rap_bilan, rv.rap_motif, rv.rap_coef_confiance, rv.rap_lu, rv.vis_matricule " +
                 "FROM RapportVisite rv " +
                 "INNER JOIN Visiteur as v " +
                 "ON rv.vis_matricule = v.vis_matricule " +
@@ -156,7 +152,8 @@ public class ModeleGsbRv {
                         resultat.getString("rap_bilan"),
                         resultat.getString("rap_motif"),
                         resultat.getInt("rap_coef_confiance"),
-                        resultat.getBoolean("rap_lu")
+                        resultat.getBoolean("rap_lu"),
+                        resultat.
                 );
                 rapportsVisites.add(rapportVisite);
             }
@@ -198,5 +195,30 @@ public class ModeleGsbRv {
             i -= 1 ;
         }
         return annees;
+    }
+
+    public static List<Praticien> getPraticien() throws ConnexionException {
+        Connection connexion = ConnexionBD.getConnexion();
+        List<Praticien> praticiens = new ArrayList<>();
+        String requete = """
+                    SELECT pra_num, pra_nom, pra_ville
+                    FROM Praticien ;
+                    """;
+        try {
+            Statement stmt = connexion.createStatement();
+            ResultSet resultat = stmt.executeQuery(requete);
+            while (resultat.next()) {
+                Praticien praticien = new Praticien(
+                        resultat.getInt("pra_num"),
+                        resultat.getString("pra_nom"),
+                        resultat.getString("pra_ville")
+                );
+                praticiens.add(praticien);
+            }
+            return praticiens;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return praticiens;
     }
 }

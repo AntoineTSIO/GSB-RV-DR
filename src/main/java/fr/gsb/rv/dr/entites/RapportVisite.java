@@ -14,7 +14,7 @@ public class RapportVisite {
     private Visiteur visiteur ;
     private Praticien praticien ;
 
-    public RapportVisite(int numero, LocalDate dateVisite, LocalDate dateRedaction, String bilan, String motif, int coefConfiance, boolean lu) {
+    public RapportVisite(int numero, LocalDate dateVisite, LocalDate dateRedaction, String bilan, String motif, int coefConfiance, boolean lu, Visiteur visiteur, Praticien praticien) {
         this.numero = numero;
         this.dateVisite = dateVisite;
         this.dateRedaction = dateRedaction;
@@ -22,6 +22,19 @@ public class RapportVisite {
         this.motif = motif;
         this.coefConfiance = coefConfiance;
         this.lu = lu;
+        this.visiteur = visiteur ;
+        this.praticien = praticien ;
+    }
+
+    public RapportVisite(int rap_num, LocalDate rap_date_visite, LocalDate rap_date_saisie, String rap_bilan, String rap_motif, int rap_coef_confiance, boolean rap_lu, Visiteur vis_matricule) {
+        this.numero = rap_num;
+        this.dateVisite = rap_date_visite;
+        this.dateRedaction = rap_date_saisie;
+        this.bilan = rap_bilan;
+        this.motif = rap_motif;
+        this.coefConfiance = rap_coef_confiance;
+        this.lu = rap_lu;
+        this.visiteur = vis_matricule ;
     }
 
     public RapportVisite() {

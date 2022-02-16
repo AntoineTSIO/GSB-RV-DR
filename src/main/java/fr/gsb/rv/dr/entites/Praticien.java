@@ -43,6 +43,12 @@ public class Praticien {
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
 
+    public Praticien(int pra_num, String pra_nom, String pra_ville) {
+        this.numero = pra_num;
+        this.nom = pra_nom;
+        this.ville = pra_ville;
+    }
+
     public int getNumero() {
         return this.numero;
     }
